@@ -1,0 +1,5 @@
+com/xjt/model/User.class
+com/xjt/service/impl/UserServiceImpl.class
+com/xjt/service/IUserService.class
+com/xjt/dao/IUserDao.class
+com/xjt/controller/UserController.class

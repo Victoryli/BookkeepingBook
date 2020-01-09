@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/logon.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+
+    <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form style="margin-left:40%;margin-top:10%;">
+    <div class="form-group">
+        <label for="mail" stype="display:block;" class="word">邮箱：</label>
+        <input type="text" class="form-control" id="mail" style="display:inline;width:200px;" autocomplete="off"  onchange="checkEmail(this.value)" />
+        <span id="emailwarning" ></span>
+    </div>
+
+    <div class="form-group">
+        <label for="username" stype="display:inline;" class="word">用户名：</label>
+        <input type="text" class="form-control" id="username" style="display:inline;width:200px;" autocomplete="off"  onchange="checkUserName(this.value)" />
+        <span id="usernamewarning" ></span>
+    </div>
+
+    <div class="form-group">
+        <label for="phonenumber" stype="display:inline;" class="word">手机号：</label>
+        <input type="text" class="form-control" id="phonenumber" style="display:inline;width:200px;" autocomplete="off"  onchange="checkPhoneNumber(this.value)" />
+        <span id="phonenumberwarning" ></span>
+    </div>
+
+    <div class="form-group">
+        <label for="password" style="display:inline;" class="word">输入密码：</label>
+        <input type="password" class="form-control" id="password" style="display:inline;width:200px;"
+               autocomplete="off" onchange="checkPasswordFirst(this.value)" />
+        <span id="passwdwarning" ></span>
+    </div>
+    <div class="form-group">
+        <label for="passwordcheck" style="display:inline;" class="word">确认密码：</label>
+        <input type="password" class="form-control" id="passwordcheck" style="display:inline;width:200px;"
+               autocomplete="off"  onchange="checkPasswordSecond(this.value)" />
+        <span id="passwdcheckwarning" ></span>
+    </div>
+
+    <div style="margin-left:4%;">
+
+        <button type="button" class="btn btn-primary" onclick="cancle()">取消</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary" onclick="logon()">注册</button>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+    urlHead = "/user";
+    var flagEmail = false,flagUserName = false,flagPhoneNumber = false,flagPasswordFirst = false,flagPasswordSecond = false;
+
+
+    function send(mail, username, mobile, password) {
+        var type = "logon";
+        var urlPath = urlHead + "?method=" + type;
+
+        $.ajax({
+            url: urlPath,
+            data: {
+                "mail": mail,
+                "username": username,
+                "phonenumber": mobile,
+                "password": password
+
+
+            },
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.msg == "success") {
+
+
+                    alert("注册成功！");
+                    window.location.href = window.location.origin + "/user/login";
+
+                } else {
+                    console.log(data.msg);
+                }
+            },
+            error: function () {
+                alert("异常！");
+            }
+        });
+    }
+
+
+    function logon() {
+        var mail = $('#mail').val(), username = $('#username').val(), mobile = $('#phonenumber').val();
+        var password = $('#password').val();
+
+        // var regBox = {
+        //     // regEmail: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,   //....邮箱
+        //     // regName: /^[A-Za-z0-9_-]{3,16}$/,                       //....用户名
+        //     // regMobile: /^0?1[3|4|5|7|8][0-9]\d{8}$/,                 //....手机
+        //     regPassWord: /^(?!([a-zA-Z]+|\d+)$)[a-zA-Z\d]{6,20}$/   //....密码
+        // }
+
+
+        if (flagEmail && flagUserName && flagPhoneNumber && flagPasswordFirst && flagPasswordSecond){
+            $('#passwdwarning').text("");
+            send(mail, username, mobile, password);
+
+        }
+        else{
+            alert("⚠️您填写的注册信息有误，请重新填写您的注册信息");
+        }
+
+
+
+    }
+
+
+    function cancle() {
+        window.location.href = window.location.origin + "/user/login";
+
+    }
+
+
+    function checkEmail(value) {
+        var type = "checkEmail";
+        var urlPath = urlHead + "?method=" + type;
+        console.log(type);
+        $.ajax({
+            url: urlPath,
+            data: {
+                "imputdata": value
+
+            },
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.available == "no") {
+                    $('#emailwarning').text("⚠️" + data.msg);
+                    $('#emailwarning').css("color","red");
+                    flagEmail = false;
+
+                }
+                else {
+                    $('#emailwarning').text("👌️" + data.msg);
+                    $('#emailwarning').css("color","green");
+                    flagEmail =  true;
+                }
+
+                console.log(data.msg + "  " + data.available);
+            },
+            error: function () {
+                alert("异常！");
+                flagEmail =  false;
+            }
+        });
+
+
+    }
+
+    function checkUserName(value) {
+        var type = "checkUserName";
+        var urlPath = urlHead + "?method=" + type;
+        console.log(type);
+        $.ajax({
+            url: urlPath,
+            data: {
+                "imputdata": value
+
+            },
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.available == "no") {
+                    $('#usernamewarning').text("⚠️" + data.msg);
+                    $('#usernamewarning').css("color","red");
+                    flagUserName =  false;
+
+                }
+                else {
+                    $('#usernamewarning').text("👌️" + data.msg);
+                    $('#usernamewarning').css("color","green");
+                    flagUserName = true;
+                }
+
+                console.log(data.msg + "  " + data.available);
+            },
+            error: function () {
+                alert("异常！");
+                flagUserName =  false;
+            }
+        });
+
+
+    }
+
+
+    function checkPhoneNumber(value) {
+        var type = "checkPhoneNumber";
+        var urlPath = urlHead + "?method=" + type;
+        console.log(type);
+        $.ajax({
+            url: urlPath,
+            data: {
+                "imputdata": value
+
+            },
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.available == "no") {
+                    $('#phonenumberwarning').text("⚠️" + data.msg);
+                    $('#phonenumberwarning').css("color","red");
+                    flagPhoneNumber =  false;
+
+                }
+                else {
+                    $('#phonenumberwarning').text("👌️" + data.msg);
+                    $('#phonenumberwarning').css("color","green");
+                    flagPhoneNumber =  true;
+
+                }
+
+                console.log(data.msg + "  " + data.available);
+            },
+            error: function () {
+                alert("异常！");
+                flagPhoneNumber = false;
+            }
+        });
+
+
+    }
+
+
+    function checkPasswordFirst(value) {
+        var regBox = {
+            regPassWord: /^(?!([a-zA-Z]+|\d+)$)[a-zA-Z\d]{6,20}$/   //....密码
+        }
+
+        var pwflag = regBox.regPassWord.test(value);
+        if (!pwflag) {
+            $('#passwdwarning').text("⚠️输入密码必须包含字母和数字且长度为6-20位");
+            $('#passwdwarning').css("color", "red");
+            flagPasswordFirst = false;
+
+        }
+        else {
+            $('#passwdwarning').text("");
+            flagPasswordFirst = true;
+        }
+
+
+    }
+    function checkPasswordSecond(value) {
+        if (value != $('#password').val()) {
+            $('#passwdcheckwarning').text("⚠️两次输入密码不一致");
+            $('#passwdcheckwarning').css("color", "red");
+            flagPasswordSecond = false;
+        }
+        else {
+            $('#passwdcheckwarning').text("");
+            flagPasswordSecond = true;
+        }
+
+
+    }
+</script>
+</body>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.xjt.dao.IUserDao">
+
+    <select id="login" resultType="User">
+        SELECT id,username,email,mobile,password FROM user WHERE 1=1
+        <if test="username!=null and username!='' " >
+           and  username = #{username}
+        </if>
+        <if test="email!=null and email!='' " >
+        and  email = #{email}
+        </if>
+        <if test="mobile!=null and mobile!='' " >
+            and  mobile = #{mobile}
+        </if>
+
+    </select>
+
+    <select id="getCategory" resultType="CategoryBean">
+        select id,name from category  where   1=1
+        <if test="userid!=null and userid!='' ">
+          and userid = #{userid}
+        </if>
+
+    </select>
+
+    <insert id="logon" >
+        insert into user (email,username,mobile,password) values (#{email},#{username},#{mobile},#{password})
+    </insert>
+    
+    <insert id="insertCategory" >
+        insert into category (name,userid) values (#{name},#{userid})
+    </insert>
+
+    <delete id="deleteCategory">
+        delete from category where 1=1
+        <if test="id!=null and id !='' ">
+            and id = #{id}
+        </if>
+
+        <if test="userid!=null and userid !='' ">
+            and userid = #{userid}
+        </if>
+    </delete>
+
+    <update id="updateCategory">
+        update category set name = #{name} where id = #{id} and userid = #{userid}
+    </update>
+
+    <insert id="recordBill">
+        insert into record (spend,cid,userid,comment,date) values (#{spend},(select id from category WHERE name = #{category}),#{userid},#{comment},#{date})
+    </insert>
+
+    <select id="getSpendSituation" resultType="SpendBean">
+    SELECT a.spend,b.name  FROM  (SELECT sum(spend)spend,cid from record  WHERE userid = #{id} GROUP BY cid)a JOIN category b ON a.cid = b.id
+    </select>
+
+    <select id="getSpendTrend"  resultType="TrendBean">
+
+    SELECT sum(spend) spend,DATE_FORMAT(date,'%d')days FROM record WHERE PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( date, '%Y%m' ) ) = #{month} and userid = #{userid} GROUP BY date
+
+    </select>
+</mapper>
