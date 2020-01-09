@@ -12,7 +12,7 @@ public class LinkedListQueue {
     private Node head = null;
     private Node tail = null;
 
-    // 入队
+
     public void enqueue(String value) {
         if (tail == null) {
             Node newNode = new Node(value, null);
