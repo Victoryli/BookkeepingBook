@@ -1,10 +1,6 @@
 package com.xjt.controller;
 
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.xjt.model.*;
 import com.xjt.service.IUserService;
 import com.xjt.util.GenerateImageUtil;
