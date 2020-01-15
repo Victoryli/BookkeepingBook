@@ -21,7 +21,7 @@ function getUserInfo() {
 
         },
         error: function () {
-            alert("异常！");
+            window.location.href = window.location.origin;
         }
     });
 
@@ -243,7 +243,8 @@ function getSpendSituation() {
             myChart.setOption(option);
         },
         error: function () {
-            alert("异常！");
+            window.location.href = window.location.origin;
+
         }
     });
 
@@ -391,7 +392,7 @@ function getSpendTrend() {
             // console.log(list);
         },
         error: function () {
-            alert("异常！");
+            window.location.href = window.location.origin;
         }
     });
 

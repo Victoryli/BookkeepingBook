@@ -1,0 +1,26 @@
+package com.xjt.controller;
+
+import javax.servlet.*;
+import java.io.IOException;
+
+/**
+ * @author liqing
+ * @version 1.0
+ * @date 2020-01-14 15:10
+ */
+public class TestFilter  implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}

@@ -36,8 +36,8 @@
         <span id="phonenumberwarning" ></span>
     </div>
 
-    <div class="form-group">
-        <label for="password" style="display:inline;" class="word">输入密码：</label>
+    <div class="form-group" >
+        <label for="password" style="display:inline;" class="word" >输入密码：</label>
         <input type="password" class="form-control" id="password" style="display:inline;width:200px;"
                autocomplete="off" onchange="checkPasswordFirst(this.value)" />
         <span id="passwdwarning" ></span>
@@ -49,7 +49,7 @@
         <span id="passwdcheckwarning" ></span>
     </div>
 
-    <div style="margin-left:4%;">
+    <div style="margin-left:15%;">
 
         <button type="button" class="btn btn-primary" onclick="cancle()">取消</button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -125,7 +125,7 @@
 
 
     function cancle() {
-        window.location.href = window.location.origin + "/user/login";
+        window.location.href = window.location.origin;
 
     }
 
