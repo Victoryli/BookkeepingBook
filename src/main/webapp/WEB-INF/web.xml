@@ -5,9 +5,9 @@
 
   <display-name>mvcDemo</display-name>
   <!--项目的欢迎页，项目运行起来后访问的页面-->
-<!--  <welcome-file-list>-->
-<!--    <welcome-file>/WEB-INF/pages/html/login.html</welcome-file>-->
-<!--  </welcome-file-list>-->
+  <welcome-file-list>
+    <welcome-file>login.html</welcome-file>
+  </welcome-file-list>
 
   <!-- 注册ServletContext监听器，创建容器对象，并且将ApplicationContext对象放到Application域中 -->
   <listener>
